@@ -118,7 +118,7 @@ function buildNumbers() {
 
 function buildShapes() {
 	//shapes = ["circle","square","rectangle","triangle","diamond","star"];
-	shapes = ["circle","square","rectangle"];
+	shapes = ["circle","square","rectangle","triangle","diamond"];
 }
 
 function buildWords() {
@@ -170,7 +170,7 @@ function newItem() {
 		drawText(item);
 	} 
 	//
-	if(soundEnabled) {
+	if (soundEnabled) {
 		playSound(item);
 	}
 }
@@ -178,7 +178,6 @@ function newItem() {
 function nextSeqItem() {
 	// Get item
 	var item;
-//	var num = 0;
 	// TODO: for now just do upper letters
 
 	var returnVal = [currentArrayNum,currentArray[currentPos]];
@@ -258,7 +257,7 @@ function drawRectangle() {
 }
 
 function drawCircle() {
-	 var radius = 40;
+	 var radius = 100;
 	// alert("circle");
      context.beginPath();
      context.arc(windowWidth/2, windowHeight/2, radius, 0, 2 * Math.PI, false);
@@ -284,13 +283,29 @@ function drawSquare() {
 }
 function drawDiamond() {
 	context.beginPath();
-
-
+	context.moveTo(210,100);
+    context.lineTo(410,400);
+    context.lineTo(210,700);
+    context.lineTo(10,400);
+    context.lineTo(210,105);
+    setRandomColor();
+    context.fill();
+    context.lineWidth = 7;
+    context.strokeStyle = 'black';
 	context.stroke();
 }
 
 function drawTriangle() {
-	
+	context.beginPath();
+	context.moveTo(210,100);
+    context.lineTo(410,400);
+    context.lineTo(10,400);
+    context.lineTo(210,105);
+    setRandomColor();
+    context.fill();
+    context.lineWidth = 7;
+    context.strokeStyle = 'black';
+	context.stroke();
 }
 
 function drawStar() {
@@ -380,4 +395,6 @@ function getMousePos(canvas, evt) {
     };
 }
 
-// --- Toggles ---
+//----------------------------------------------------------------------------------------------------
+// Toggles
+//----------------------------------------------------------------------------------------------------

@@ -82,7 +82,6 @@ function drawMenuBar() {
     	context.fillText(it,(canvas.width - x),20);
     }
 
-
     // reset
     context.font = fontHeight + "px bold helvetica";
 }
@@ -335,8 +334,6 @@ function keyboardEventHandler(e) {
 	var shift = e.shiftKey;
 	var letter = String.fromCharCode(key);
 
-	//console.log(key);
-	
 	if (key >=48 && key <=57) { 
 		currentArray = numbers;
 		currentPos = key - 48;
@@ -359,11 +356,9 @@ function keyboardEventHandler(e) {
 			drawText(letter);
 		} 
 	} // end else
-
 } 
 
 function mouseEventHandler(e) {
-	//console.log(e);
 	// Check if user clicked in the menu region
 	if (e.clientY < menuBarHeight) {
 		handleMenuBarClick(e.clientY);

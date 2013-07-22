@@ -118,7 +118,7 @@ function buildNumbers() {
 
 function buildShapes() {
 	//shapes = ["circle","square","rectangle","triangle","diamond","star"];
-	shapes = ["circle","square","rectangle","triangle","diamond"];
+	shapes = ["circle","square","rectangle","triangle","diamond","trapezoid"];
 }
 
 function buildWords() {
@@ -237,6 +237,8 @@ function drawShape(item) {
 			break;
 		case "star": drawStar();
 			break;
+		case "trapezoid": drawTrapezoid();
+		break;
 		default: drawCircle();
 			break;
 	}
@@ -305,6 +307,22 @@ function drawTriangle() {
     context.fill();
     context.lineWidth = 7;
     context.strokeStyle = 'black';
+	context.stroke();
+}
+
+function drawTrapezoid() {
+	context.beginPath();
+
+	context.moveTo(210,200);
+	context.lineTo(510,200);
+	context.lineTo(710,450);
+	context.lineTo(10,450);
+	context.lineTo(210,200);
+
+	setRandomColor();
+	context.fill();
+	context.lineWidth = 7;
+	context.strokeStyle = 'black';
 	context.stroke();
 }
 

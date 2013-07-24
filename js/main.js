@@ -4,8 +4,11 @@ var numbers = [];
 var shapes = [];
 var words = [];
 
+var display = [];
+
 var currentPos,currentArrayNumm,currentArray,mode,menuBarHeight;
-var canvas,context,windowHeight,windowWidth,lastItem,fontHeight,soundEnabled;
+var canvas,context,windowHeight,windowWidth,lastItem,baseFontHeight,fontHeight,soundEnabled;
+var singleLetter,shrinkToFit;
 
 $(document).ready(function() {
 
@@ -33,7 +36,8 @@ function setupCanvas() {
 	windowWidth = window.innerWidth * 0.975;
 
 	// Adjust font height based on window height 
-	fontHeight = 500;
+	baseFontHeight = "500";
+	fontHeight = baseFontHeight;
 
 	canvas = document.getElementById("canvas");
 
@@ -47,11 +51,11 @@ function setupCanvas() {
 }
 
 function drawMenuBar() {
-    context.beginPath();
- 	menuBarHeight = Math.floor(canvas.height * 0.05);
-    context.rect(0, 0, canvas.width, menuBarHeight);
-    setRandomColor();
-    context.fill();
+	context.beginPath();
+	menuBarHeight = Math.floor(canvas.height * 0.05);
+	context.rect(0, 0, canvas.width, menuBarHeight);
+	setRandomColor();
+	context.fill();
 
     // Menu bar will have toggles for:
     // ABC, Numbers, Shapes, Sound, Background music
@@ -62,9 +66,9 @@ function drawMenuBar() {
 
     // Need to take into account original height, reset back to original when done
     context.font = "20px bold helvetica";
-	context.fillStyle= 'rgb(0,0,0)';
+    context.fillStyle= 'rgb(0,0,0)';
 
-	var x = itemSpacing;
+    var x = itemSpacing;
     // Gameplay items on left
     for (var i = 0; i < menuItems1.length; i++) {
     	context.fillText(menuItems1[i],x,20);
@@ -78,7 +82,7 @@ function drawMenuBar() {
 
     	//context.fillText(it,(canvas.width - x),20);
     	x += context.measureText(menuItems2[i]).width + itemSpacing;
- 
+
     	context.fillText(it,(canvas.width - x),20);
     }
 
@@ -122,16 +126,20 @@ function buildShapes() {
 }
 
 function buildWords() {
-	words = ["Lukas",
-	"Mommy","Lukas","Diego","Kiwi",
-	"Nonno","Grammy","Grampy",
-	"Apple","Ball","Cat","Dog","Elephant","F","Giraffe","Hippo","Ice","J","K","Lion","Monkey",
-	"N","Orange","P","Q","Rabbit","S","T","Umbrella","Violin","Walrus","Xylophone","Yellow","Zebra"];
+	words = [
+	"Mommy","Daddy","Lukas","Diego","Kiwi",
+	"Nonno","Gramma","Grammy","Grampy",
+	"Apple","Ball","Cat","Dog","Elephant","F","Giraffe","Hippo","Ice","Juice","Kiwi","Lion","Monkey",
+	"Nuts","Orange","Pancake","Queen","Rabbit","S","T","Umbrella","Violin","Walrus","Xylophone","Yellow","Zebra"];
 }
 
 function setupInitialMode() {
 	if (1) {
 		mode = "sequential";
+
+		singleLetter = true;
+		shrinkToFit = true;
+
 		currentPos = -1;
 		currentArrayNum = 0;
 		currentArray = lettersUpper;
@@ -189,18 +197,18 @@ function nextSeqItem() {
 		currentArrayNum++;
 		switch (currentArrayNum) {
 			case 1: currentArray = lettersLower;
-				break;
+			break;
 			case 2: currentArray = numbers;
-				break;
+			break;
 			case 3: currentArray = shapes;
-				break;
+			break;
 			case 4: currentArray = lettersUpper;
-				currentArrayNum = 0;
-				break;
+			currentArrayNum = 0;
+			break;
 		}
 	}
 //	return returnVal;
-	return [currentArrayNum,currentArray[currentPos]];
+return [currentArrayNum,currentArray[currentPos]];
 }
 
 function nextRandomItem() {
@@ -224,121 +232,113 @@ function getRandomItem(items) {
 function drawShape(item) {
 	console.log(item);
 
+	context.beginPath();
+
 	switch(item) {
 		case "rectangle": drawRectangle();
-			break;
+		break;
 		case "circle": drawCircle();
-			break;
+		break;
 		case "square": drawSquare();
-			break;
+		break;
 		case "diamond": drawDiamond();
-			break;
+		break;
 		case "triangle": drawTriangle();
-			break;
+		break;
 		case "star": drawStar();
-			break;
+		break;
 		case "trapezoid": drawTrapezoid();
 		break;
 		default: drawCircle();
-			break;
+		break;
 	}
+	drawIt();
+}
+
+function drawIt() {
+    setRandomColor();
+    
+    context.fill();
+    context.lineWidth = 7;
+    context.strokeStyle = 'black';
+    context.stroke();
+
 }
 
 function drawRectangle() {
-	//context.
-      context.beginPath();
-      // TODO - center this
-      context.rect(188, 50, 500, 300);
-      setRandomColor();
-      //context.fillStyle = 'yellow';
-      context.fill();
-      context.lineWidth = 7;
-      context.strokeStyle = 'black';
-      context.stroke();
-
+	// TODO - center this
+    context.rect(188, 50, 500, 300);
 }
 
 function drawCircle() {
-	 var radius = 100;
-	// alert("circle");
-     context.beginPath();
-     context.arc(windowWidth/2, windowHeight/2, radius, 0, 2 * Math.PI, false);
-     //context.fillStyle = 'green';
-     setRandomColor();
-     context.fill();
-     context.lineWidth = 7;
-     context.strokeStyle = 'black';
-     context.stroke();
+  	var radius = 200;
 
+	context.arc(windowWidth/2, windowHeight/2, radius, 0, 2 * Math.PI, false);
 }
+
 function drawSquare() {
-      context.beginPath();
-      // TODO - center this
-      context.rect(188, 50, 300, 300);
-      setRandomColor();
-      //context.fillStyle = 'yellow';
-      context.fill();
-      context.lineWidth = 7;
-      context.strokeStyle = 'black';
-      context.stroke();
-	
+    // TODO - center this
+    context.rect(188, 50, 300, 300);
 }
+
 function drawDiamond() {
-	context.beginPath();
-	context.moveTo(210,100);
-    context.lineTo(410,400);
-    context.lineTo(210,700);
-    context.lineTo(10,400);
-    context.lineTo(210,105);
-    setRandomColor();
-    context.fill();
-    context.lineWidth = 7;
-    context.strokeStyle = 'black';
-	context.stroke();
+  	context.moveTo(210,100);
+  	context.lineTo(410,400);
+  	context.lineTo(210,700);
+  	context.lineTo(10,400);
+  	context.lineTo(210,105);
 }
 
 function drawTriangle() {
-	context.beginPath();
 	context.moveTo(210,100);
-    context.lineTo(410,400);
-    context.lineTo(10,400);
-    context.lineTo(210,105);
-    setRandomColor();
-    context.fill();
-    context.lineWidth = 7;
-    context.strokeStyle = 'black';
-	context.stroke();
+  	context.lineTo(410,400);
+  	context.lineTo(10,400);
+  	context.lineTo(210,105);
 }
 
 function drawTrapezoid() {
-	context.beginPath();
+  	context.moveTo(210,200);
+  	context.lineTo(510,200);
+  	context.lineTo(710,450);
+  	context.lineTo(10,450);
+  	context.lineTo(210,200);
 
-	context.moveTo(210,200);
-	context.lineTo(510,200);
-	context.lineTo(710,450);
-	context.lineTo(10,450);
-	context.lineTo(210,200);
-
-	setRandomColor();
-	context.fill();
-	context.lineWidth = 7;
-	context.strokeStyle = 'black';
-	context.stroke();
 }
 
 function drawStar() {
-	
+
 }
 
 function drawText(item) {
-	setRandomColor();
-	var xPos,yPos;
-	var w = context.measureText(item).width;
-	var h = fontHeight;
-	xPos = (windowWidth/2) - (w/2);
-	yPos = (windowHeight/2) + (h/3);
+  	setRandomColor();
+  	var xPos,yPos;
+  	var w = context.measureText(item).width;
+  	var h = fontHeight;
+  	xPos = (windowWidth/2) - (w/2);
+  	yPos = (windowHeight/2) + (h/3);
 
-	context.fillText(item,xPos,yPos);
+  	if (w > windowWidth) {
+  		if (shrinkToFit) {
+  			// Adjust font size based on how much to print.  This isn't perfect yet
+  			fontHeight = Math.floor(fontHeight - (fontHeight * (w - windowWidth)/windowWidth) - 50);
+			context.font = fontHeight + "px bold helvetica";
+  		}
+  	}
+
+  	context.fillText(item,xPos,yPos);
+}
+
+function drawDisplayString() {
+	setRandomColor();
+  	
+
+  	var xPos,yPos;
+  	var w = context.measureText(item).width;
+  	var h = fontHeight;
+  	xPos = (windowWidth/2) - (w/2);
+  	yPos = (windowHeight/2) + (h/3);
+
+  	context.fillText(item,xPos,yPos);	
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -348,6 +348,11 @@ function clearCanvas() {
 	// TODO: This will eventually have a top bar - don't clear this
 	//       (take height into account)
 	context.clearRect(0, menuBarHeight, canvas.width, (canvas.height - menuBarHeight));
+}
+
+function clearDisplayString() {
+	display = [];
+	context.font = baseFontHeight + "px bold helvetica";
 }
 
 function random(max) {
@@ -366,15 +371,22 @@ function keyboardEventHandler(e) {
 	var key = e.keyCode;
 	var shift = e.shiftKey;
 	var letter = String.fromCharCode(key);
+	var disp = false;
 
+	// Clear
+	if (key == 32) {
+		clearCanvas();
+		clearDisplayString();
+	}
+
+	// Numbers
 	if (key >=48 && key <=57) { 
 		currentArray = numbers;
 		currentPos = key - 48;
 		letter = currentPos;
-
-		clearCanvas();
-		drawText(letter);
+		disp = "true";
 	}
+	// Letters
 	else {
 		if (key >= 65 && key <=91) {
 			currentPos = key - 65;
@@ -385,10 +397,30 @@ function keyboardEventHandler(e) {
 			else {
 				currentArray = lettersUpper;
 			}
+		disp = "true";
+		}
+	} // end else
+
+	// Check if we have something to display
+	if (disp === "true") {
+		if (singleLetter === "true") {
 			clearCanvas();
 			drawText(letter);
-		} 
-	} // end else
+		}
+		else {
+			display.push(letter);
+
+			var displayString = "";
+			//
+			// When to reset?
+			for (var i =0; i < display.length; i++) {
+				displayString += display[i];
+			}
+
+			clearCanvas();
+			drawText(displayString);
+		}
+	}
 } 
 
 function mouseEventHandler(e) {
@@ -406,11 +438,11 @@ function handleMenuBarClick(y) {
 }
 
 function getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
-    };
+	var rect = canvas.getBoundingClientRect();
+	return {
+		x: evt.clientX - rect.left,
+		y: evt.clientY - rect.top
+	};
 }
 
 //----------------------------------------------------------------------------------------------------
